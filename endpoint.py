@@ -1,11 +1,11 @@
 
 
 class Endpoint:
-    def __init__(self, http_method, url, restcontroller):
+    def __init__(self, http_method, url, rest_controller):
         self.http_method = http_method
         self.url = url
-        self.restcontroller = restcontroller
+        self.rest_controller = rest_controller
 
-    def displayEndpoint(self):
-        print("%s - %s - %s" % (self.restcontroller, self.http_method, self.url))
+    def display_endpoint(self):
+        print("%s - %s - %s" % (self.rest_controller, self.http_method, self.url))
 

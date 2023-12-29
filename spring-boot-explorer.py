@@ -221,7 +221,7 @@ def find_beans_by_type(bean_mapping, bean_type):
 
 def print_endpoints(mapping):
     for e in mapping:
-        print(e.displayEndpoint())
+        print(e.display_endpoint())
 
 
 def get_bean_counts(bean_mapping):
