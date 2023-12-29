@@ -6,6 +6,7 @@ import os
 from cli_handler import CliHandler
 from cli_validation_result import ValidationResult
 
+
 # find all Java files
 # find all RestControllers, Service, Component
 # find all endpoints
@@ -25,49 +26,49 @@ def handle_cli_args(argv):
 
 
 def show_menu(root_path):
-  source_root = root_path + "/src/main/java"
-  if has_modules(root_path):
-      source_root = root_path
-  menu_options = {
-      1: 'List all beans',
-      2: 'List all endpoints',
-      3: 'Show bean count',
-      4: 'Find all @PreAuthorize annotations',
-      5: 'Exit'
-  }
+    source_root = root_path + "/src/main/java"
+    if has_modules(root_path):
+        source_root = root_path
+    menu_options = {
+        1: 'List all beans',
+        2: 'List all endpoints',
+        3: 'Show bean count',
+        4: 'Find all @PreAuthorize annotations',
+        5: 'Exit'
+    }
 
-  while(True):
-    print("Main menu")
-    print("---------")
-    for k in menu_options.keys():
-        print(k, "-", menu_options[k])
-    try:
-      userinput = int(input("Enter your choice: "))
-    except ValueError:
-        print("Please enter a number")
-        continue
+    while (True):
+        print("Main menu")
+        print("---------")
+        for k in menu_options.keys():
+            print(k, "-", menu_options[k])
+        try:
+            userinput = int(input("Enter your choice: "))
+        except ValueError:
+            print("Please enter a number")
+            continue
 
-    if userinput == 1:
-        all_java_files = find_all_java_files(source_root)
-        bean_mapping = find_beans(all_java_files)
-        print_beans(bean_mapping)
-    elif userinput == 2:
-        all_java_files = find_all_java_files(source_root)
-        bean_mapping = find_beans(all_java_files)
-        endpoints = find_endpoints_per_controller(bean_mapping)
-        print_endpoints(endpoints)
-    elif userinput == 3:
-        all_java_files = find_all_java_files(source_root)
-        bean_mapping = find_beans(all_java_files)
-        get_bean_counts(bean_mapping)
-    elif userinput == 4:
-        all_java_files = find_all_java_files(source_root)
-        bean_mapping = find_beans(all_java_files)
-        print_preauthorize_annotations(bean_mapping)
-    elif userinput == 5:
-        exit(0)
-    else:
-        print("Please choose a valid number!")
+        if userinput == 1:
+            all_java_files = find_all_java_files(source_root)
+            bean_mapping = find_beans(all_java_files)
+            print_beans(bean_mapping)
+        elif userinput == 2:
+            all_java_files = find_all_java_files(source_root)
+            bean_mapping = find_beans(all_java_files)
+            endpoints = find_endpoints_per_controller(bean_mapping)
+            print_endpoints(endpoints)
+        elif userinput == 3:
+            all_java_files = find_all_java_files(source_root)
+            bean_mapping = find_beans(all_java_files)
+            get_bean_counts(bean_mapping)
+        elif userinput == 4:
+            all_java_files = find_all_java_files(source_root)
+            bean_mapping = find_beans(all_java_files)
+            print_preauthorize_annotations(bean_mapping)
+        elif userinput == 5:
+            exit(0)
+        else:
+            print("Please choose a valid number!")
 
 
 def has_modules(root_path):
@@ -79,23 +80,22 @@ def find_all_java_files(base_dir):
     files = glob.glob(base_dir + '/**/*.java', recursive=True)
     for file in files:
         java_files.append(file)
-        print(file)
     return java_files
 
 
 def get_bean_type(filename):
     bean_type = BeanType.NONE
     try:
-      with open(filename, 'r') as file:
-          for line in file:
-              if "@RestController" in line:
-                  bean_type = BeanType.CONTROLLER
-              elif "@Service" in line:
-                  bean_type = BeanType.SERVICE
-              elif "@Component" in line:
-                  bean_type = BeanType.COMPONENT
-              elif "@Configuration" in line:
-                  bean_type = BeanType.CONFIGURATION
+        with open(filename, 'r') as file:
+            for line in file:
+                if "@RestController" in line:
+                    bean_type = BeanType.CONTROLLER
+                elif "@Service" in line:
+                    bean_type = BeanType.SERVICE
+                elif "@Component" in line:
+                    bean_type = BeanType.COMPONENT
+                elif "@Configuration" in line:
+                    bean_type = BeanType.CONFIGURATION
     except FileNotFoundError as e:
         print("File could not be found")
     return bean_type
@@ -116,9 +116,9 @@ def print_beans(bean_mapping):
 def get_file_content(filename):
     lines = []
     try:
-      with open(filename, 'r') as file:
-          for line in file:
-              lines.append(line)
+        with open(filename, 'r') as file:
+            for line in file:
+                lines.append(line)
     except FileNotFoundError as e:
         print("File could not be found")
     return lines
@@ -126,12 +126,12 @@ def get_file_content(filename):
 
 def find_endpoints_per_controller(bean_mapping):
     endpoints = []
-    restcontrollers = find_beans_by_type(bean_mapping, BeanType.CONTROLLER)
+    rest_controllers = find_beans_by_type(bean_mapping, BeanType.CONTROLLER)
 
-    for restcontroller in restcontrollers:
-        lines = get_file_content(restcontroller)
+    for rest_controller in rest_controllers:
+        lines = get_file_content(rest_controller)
         base_url = find_base_url(lines)
-        endpoints.extend(find_endpoints(lines, base_url, restcontroller))
+        endpoints.extend(find_endpoints(lines, base_url, rest_controller))
     return endpoints
 
 
@@ -143,11 +143,11 @@ def print_preauthorize_annotations(bean_mapping):
 
 def find_all_preauthorize(bean_mapping):
     preauthorizes = []
-    restcontrollers = find_beans_by_type(bean_mapping, BeanType.CONTROLLER)
+    rest_controllers = find_beans_by_type(bean_mapping, BeanType.CONTROLLER)
 
-    for restcontroller in restcontrollers:
-        lines = get_file_content(restcontroller)
-        preauthorizes.extend(find_preauthorize_in_controller(lines, restcontroller))
+    for rest_controller in rest_controllers:
+        lines = get_file_content(rest_controller)
+        preauthorizes.extend(find_preauthorize_in_controller(lines, rest_controller))
 
     return preauthorizes
 
@@ -213,7 +213,7 @@ def extract_http_method(line):
 
 def find_beans_by_type(bean_mapping, bean_type):
     filenames = []
-    for k,v in bean_mapping.items():
+    for k, v in bean_mapping.items():
         if v == bean_type:
             filenames.append(k)
     return filenames
