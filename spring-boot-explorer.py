@@ -5,6 +5,8 @@ import sys
 import os
 from cli_handler import CliHandler
 from cli_validation_result import ValidationResult
+from line_extractor import extract_url
+from line_extractor import extract_class_name
 
 
 # find all Java files
@@ -180,17 +182,8 @@ def find_endpoints(lines, base_url, rest_controller):
         if contains_mapping(line):
             http_method = extract_http_method(line)
             url = base_url + extract_url(line)
-            endpoints.append(Endpoint(http_method, url, rest_controller))
+            endpoints.append(Endpoint(http_method, url, extract_class_name(rest_controller)))
     return endpoints
-
-
-def extract_url(line):
-    url = ""
-    if line.find("(") > 0:
-        start_index = int(line.find("(") + 2)
-        end_index = int(line.find(")") - 1)
-        url = line[start_index:end_index]
-    return url
 
 
 def contains_mapping(line):
