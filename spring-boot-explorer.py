@@ -134,6 +134,7 @@ def find_endpoints_per_controller(bean_mapping):
         lines = get_file_content(rest_controller)
         base_url = find_base_url(lines)
         endpoints.extend(find_endpoints(lines, base_url, rest_controller))
+
     return endpoints
 
 
@@ -214,7 +215,8 @@ def find_beans_by_type(bean_mapping, bean_type):
 
 def print_endpoints(mapping):
     for e in mapping:
-        print(e.display_endpoint())
+        e.display_endpoint()
+
 
 
 def get_bean_counts(bean_mapping):
