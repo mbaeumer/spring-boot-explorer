@@ -7,6 +7,7 @@ from cli_handler import CliHandler
 from cli_validation_result import ValidationResult
 from line_extractor import extract_url
 from line_extractor import extract_class_name
+from csv_writer import write_csv_file
 
 
 # find all Java files
@@ -59,6 +60,9 @@ def show_menu(root_path):
             bean_mapping = find_beans(all_java_files)
             endpoints = find_endpoints_per_controller(bean_mapping)
             print_endpoints(endpoints)
+            export = ask_for_csv_export()
+            if export == 'y':
+                write_csv_file("test.csv", endpoints)
         elif userinput == 3:
             all_java_files = find_all_java_files(source_root)
             bean_mapping = find_beans(all_java_files)
@@ -217,6 +221,14 @@ def print_endpoints(mapping):
     for e in mapping:
         e.display_endpoint()
 
+def ask_for_csv_export():
+    user_input = ''
+    choices = ['y', 'n']
+    print("")
+    while user_input not in choices:
+        user_input = input("Want to export? (y/n)")
+
+    return user_input
 
 
 def get_bean_counts(bean_mapping):
