@@ -62,7 +62,7 @@ def show_menu(root_path):
             print_endpoints(endpoints)
             export = ask_for_csv_export()
             if export == 'y':
-                write_csv_file("test.csv", endpoints)
+                write_csv_file(endpoints)
         elif userinput == 3:
             all_java_files = find_all_java_files(source_root)
             bean_mapping = find_beans(all_java_files)
