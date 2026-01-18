@@ -1,6 +1,7 @@
 import glob
 from bean_type import BeanType
 from endpoint import Endpoint
+from java_file import JavaFile
 import sys
 import os
 from cli_handler import CliHandler
@@ -53,6 +54,8 @@ def show_menu(root_path):
 
         if userinput == 1:
             all_java_files = find_all_java_files(source_root)
+            # TODO:
+            # classify, print beans from list
             bean_mapping = find_beans(all_java_files)
             print_beans(bean_mapping)
         elif userinput == 2:
@@ -106,6 +109,13 @@ def get_bean_type(filename):
         print("File could not be found")
     return bean_type
 
+
+def classify_java_files(root_path, java_file_names):
+    java_classes = []
+    for name in java_file_names:
+        java_classes.append(JavaFile.from_file_name(root_path, name))
+
+    return java_classes
 
 def find_beans(java_files):
     bean_type_dict = {}
