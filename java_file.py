@@ -9,16 +9,15 @@ def _extract_class_name(file_name):
 
     
 def _extract_module_name(root_path, file_name):
-    length = len(root)
-    index_source_path = path.find("/src/main")
-    module_name = path[length + 1:index_source_path]
-    print(index_source_path)
-    return module_name
+    length = len(root_path)
+    index_source_path = file_name.find("/src/main")
+    module_name = file_name[length + 1:index_source_path]
+    return "src" if len(module_name) == 0 else module_name
 
 def _extract_file_content(file_name):
     lines = []
     try:
-        with open(filename, 'r') as file:
+        with open(file_name, 'r') as file:
             for line in file:
                 lines.append(line)
     except FileNotFoundError as e:

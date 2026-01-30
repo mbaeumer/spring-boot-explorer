@@ -9,6 +9,7 @@ from cli_validation_result import ValidationResult
 from line_extractor import extract_url
 from line_extractor import extract_class_name
 from csv_writer import write_csv_file
+from module_extractor import extract_unique_module_names
 
 
 # find all Java files
@@ -30,6 +31,9 @@ def handle_cli_args(argv):
 
 
 def show_menu(root_path):
+    all_java_files = find_all_java_files(root_path)
+
+    module_names = extract_unique_module_names(all_java_files, root_path)
     source_root = root_path + "/src/main/java"
     if has_modules(root_path):
         source_root = root_path
@@ -54,10 +58,8 @@ def show_menu(root_path):
 
         if userinput == 1:
             all_java_files = find_all_java_files(source_root)
-            # TODO:
-            # classify, print beans from list
-            bean_mapping = find_beans(all_java_files)
-            print_beans(bean_mapping)
+            java_files = classify_java_files(root_path, all_java_files)
+            print_beans_from_list(java_files)
         elif userinput == 2:
             all_java_files = find_all_java_files(source_root)
             bean_mapping = find_beans(all_java_files)
@@ -80,8 +82,8 @@ def show_menu(root_path):
             print("Please choose a valid number!")
 
 
-def has_modules(root_path):
-    return os.path.isdir(root_path + "/application") and os.path.isdir(root_path + "/business")
+def has_modules(module_names):
+    return len(module_names) > 1
 
 
 def find_all_java_files(base_dir):
@@ -127,6 +129,10 @@ def find_beans(java_files):
 def print_beans(bean_mapping):
     for k, v in bean_mapping.items():
         print(k + "-" + str(v))
+
+def print_beans_from_list(beans):
+    for bean in beans:
+        print("Module: %s Class: %s Type: %s" % (bean.module, bean.class_name, bean.bean_type ))
 
 
 def get_file_content(filename):
