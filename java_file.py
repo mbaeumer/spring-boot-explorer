@@ -71,6 +71,8 @@ class JavaFile:
                 bean_type = BeanType.COMPONENT
             elif "@Configuration" in line:
                 bean_type = BeanType.CONFIGURATION
+            elif "@Repository" in line:
+                bean_type = BeanType.REPOSITORY
         return bean_type
     
     def get_imports(self):

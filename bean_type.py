@@ -5,4 +5,5 @@ class BeanType(Enum):
   SERVICE = 2
   COMPONENT = 3
   CONFIGURATION = 4
-  NONE = 5
+  REPOSITORY = 5
+  NONE = 6
