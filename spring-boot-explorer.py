@@ -131,6 +131,7 @@ def print_beans(bean_mapping):
         print(k + "-" + str(v))
 
 def print_beans_from_list(beans):
+    beans.sort(key=lambda b: b.bean_type.value)
     for bean in beans:
         print("Module: %s Class: %s Type: %s" % (bean.module, bean.class_name, bean.bean_type ))
 
