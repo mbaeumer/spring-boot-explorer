@@ -73,6 +73,8 @@ class JavaFile:
                 bean_type = BeanType.CONFIGURATION
             elif "@Repository" in line:
                 bean_type = BeanType.REPOSITORY
+            elif "@Entity" in line:
+                bean_type = BeanType.ENTITY
         return bean_type
     
     def get_imports(self):
@@ -83,5 +85,3 @@ class JavaFile:
             
         return imports
         
-
-

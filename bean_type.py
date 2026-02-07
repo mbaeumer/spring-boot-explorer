@@ -6,4 +6,5 @@ class BeanType(Enum):
   COMPONENT = 3
   CONFIGURATION = 4
   REPOSITORY = 5
-  NONE = 6
+  ENTITY = 6
+  NONE = 7
