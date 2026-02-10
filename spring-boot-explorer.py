@@ -63,8 +63,8 @@ def show_menu(root_path):
             print_beans_by_type(java_files)
         elif userinput == 2:
             all_java_files = find_all_java_files(source_root)
-            bean_mapping = find_beans(all_java_files)
-            endpoints = find_endpoints_per_controller(bean_mapping)
+            java_files = classify_java_files(root_path, all_java_files)
+            endpoints = find_endpoints_per_controller_with_java_files(java_files)
             print_endpoints(endpoints)
             export = ask_for_csv_export()
             if export == 'y':
@@ -175,18 +175,17 @@ def get_file_content(filename):
         print("File could not be found")
     return lines
 
-
-def find_endpoints_per_controller(bean_mapping):
+def find_endpoints_per_controller_with_java_files(java_files):
     endpoints = []
-    rest_controllers = find_beans_by_type(bean_mapping, BeanType.CONTROLLER)
+    # find all REST controllers
+    rest_controllers = [java_file for java_file in java_files if java_file.bean_type == BeanType.CONTROLLER]
 
+    # for all REST controllers find endpoints
     for rest_controller in rest_controllers:
-        lines = get_file_content(rest_controller)
-        base_url = find_base_url(lines)
-        endpoints.extend(find_endpoints(lines, base_url, rest_controller))
+        base_url = find_base_url(rest_controller.stripped_content)
+        endpoints.extend(find_endpoints(rest_controller.stripped_content, base_url, rest_controller.path))
 
     return endpoints
-
 
 def print_preauthorize_annotations(bean_mapping):
     preauthorizes = find_all_preauthorize(bean_mapping)
