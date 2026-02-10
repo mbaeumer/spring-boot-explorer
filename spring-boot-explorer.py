@@ -1,4 +1,5 @@
 import glob
+from itertools import groupby
 from bean_type import BeanType
 from endpoint import Endpoint
 from java_file import JavaFile
@@ -59,7 +60,7 @@ def show_menu(root_path):
         if userinput == 1:
             all_java_files = find_all_java_files(source_root)
             java_files = classify_java_files(root_path, all_java_files)
-            print_beans_from_list(java_files)
+            print_beans_by_type(java_files)
         elif userinput == 2:
             all_java_files = find_all_java_files(source_root)
             bean_mapping = find_beans(all_java_files)
@@ -134,6 +135,34 @@ def print_beans_from_list(beans):
     beans.sort(key=lambda b: b.bean_type.value)
     for bean in beans:
         print("Module: %s Class: %s Type: %s" % (bean.module, bean.class_name, bean.bean_type ))
+
+def print_beans_by_type(java_files, max_per_line=5, separator="-------"):
+    """
+    Prints items grouped by type, separated by dashed lines.
+    Items of the same type are printed on the same line,
+    with a maximum of `max_per_line` items per line.
+    Assumes `items` is already sorted by item.type.
+    """
+    java_files.sort(key=lambda b: b.bean_type.value)
+    first_group = True
+
+    for type_, group in groupby(java_files, key=lambda i: i.bean_type):
+        if not first_group:
+            print(separator)
+        first_group = False
+
+        type_name = getattr(type_, "name", str(type_))
+        print(type_name)
+
+        line = []
+        for item in group:
+            line.append(str(item.class_name))
+            if len(line) == max_per_line:
+                print(" ".join(line))
+                line.clear()
+
+        if line:
+            print(" ".join(line))
 
 
 def get_file_content(filename):
