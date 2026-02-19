@@ -73,6 +73,11 @@ def show_menu(root_path):
             all_java_files = find_all_java_files(source_root)
             bean_mapping = find_beans(all_java_files)
             get_bean_counts(bean_mapping)
+            all_java_files = find_all_java_files(source_root)
+            java_files = classify_java_files(root_path, all_java_files)
+            counts = get_beans_count_list(java_files)
+            print_bean_counts(counts)
+
         elif userinput == 4:
             all_java_files = find_all_java_files(source_root)
             bean_mapping = find_beans(all_java_files)
@@ -291,12 +296,15 @@ def get_bean_counts(bean_mapping):
         elif bean_mapping[k] == BeanType.CONFIGURATION:
             configuration_counter = configuration_counter + 1
 
-    print("Bean counts")
-    print("Number of controllers: \t %d" % (controller_counter))
-    print("Number of services: \t %d" % (service_counter))
-    print("Number of components: \t %d" % (component_counter))
-    print("Number of configuration: \t %d" % (configuration_counter))
+def get_beans_count_list(beans):
+    counts = {enum_value: 0 for enum_value in BeanType}
+    for bean in beans:
+        counts[bean.bean_type] += 1
+    return counts
 
+def print_bean_counts(counts):
+    for k, v in counts.items():
+        print("%s: %d" % (k.name, v))
 
 if __name__ == '__main__':
     try:
