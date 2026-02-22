@@ -71,13 +71,9 @@ def show_menu(root_path):
                 write_csv_file(endpoints)
         elif userinput == 3:
             all_java_files = find_all_java_files(source_root)
-            bean_mapping = find_beans(all_java_files)
-            get_bean_counts(bean_mapping)
-            all_java_files = find_all_java_files(source_root)
             java_files = classify_java_files(root_path, all_java_files)
             counts = get_beans_count_list(java_files)
             print_bean_counts(counts)
-
         elif userinput == 4:
             all_java_files = find_all_java_files(source_root)
             bean_mapping = find_beans(all_java_files)
