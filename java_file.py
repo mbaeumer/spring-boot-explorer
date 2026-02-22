@@ -75,6 +75,8 @@ class JavaFile:
                 bean_type = BeanType.REPOSITORY
             elif "@Entity" in line:
                 bean_type = BeanType.ENTITY
+            elif "@SpringBootApplication" in line:
+                bean_type = BeanType.SPRING_BOOT_APPLICATION
         return bean_type
     
     def get_imports(self):

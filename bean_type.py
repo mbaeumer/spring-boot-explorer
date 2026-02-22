@@ -7,4 +7,5 @@ class BeanType(Enum):
   CONFIGURATION = 4
   REPOSITORY = 5
   ENTITY = 6
-  NONE = 7
+  SPRING_BOOT_APPLICATION = 7
+  NONE = 8
