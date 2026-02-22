@@ -52,16 +52,16 @@ def show_menu(root_path):
         for k in menu_options.keys():
             print(k, "-", menu_options[k])
         try:
-            userinput = int(input("Enter your choice: "))
+            user_input = int(input("Enter your choice: "))
         except ValueError:
             print("Please enter a number")
             continue
 
-        if userinput == 1:
+        if user_input == 1:
             all_java_files = find_all_java_files(source_root)
             java_files = classify_java_files(root_path, all_java_files)
             print_beans_by_type(java_files)
-        elif userinput == 2:
+        elif user_input == 2:
             all_java_files = find_all_java_files(source_root)
             java_files = classify_java_files(root_path, all_java_files)
             endpoints = find_endpoints_per_controller_with_java_files(java_files)
@@ -69,16 +69,16 @@ def show_menu(root_path):
             export = ask_for_csv_export()
             if export == 'y':
                 write_csv_file(endpoints)
-        elif userinput == 3:
+        elif user_input == 3:
             all_java_files = find_all_java_files(source_root)
             java_files = classify_java_files(root_path, all_java_files)
             counts = get_beans_count_list(java_files)
             print_bean_counts(counts)
-        elif userinput == 4:
+        elif user_input == 4:
             all_java_files = find_all_java_files(source_root)
             bean_mapping = find_beans(all_java_files)
             print_preauthorize_annotations(bean_mapping)
-        elif userinput == 5:
+        elif user_input == 5:
             exit(0)
         else:
             print("Please choose a valid number!")
@@ -87,14 +87,12 @@ def show_menu(root_path):
 def has_modules(module_names):
     return len(module_names) > 1
 
-
 def find_all_java_files(base_dir):
     java_files = []
     files = glob.glob(base_dir + '/**/*.java', recursive=True)
     for file in files:
         java_files.append(file)
     return java_files
-
 
 def get_bean_type(filename):
     bean_type = BeanType.NONE
@@ -275,22 +273,6 @@ def ask_for_csv_export():
         user_input = input("Want to export? (y/n)")
 
     return user_input
-
-
-def get_bean_counts(bean_mapping):
-    controller_counter = 0
-    service_counter = 0
-    component_counter = 0
-    configuration_counter = 0
-    for k, v in bean_mapping.items():
-        if bean_mapping[k] == BeanType.CONTROLLER:
-            controller_counter = controller_counter + 1
-        elif bean_mapping[k] == BeanType.SERVICE:
-            service_counter = service_counter + 1
-        elif bean_mapping[k] == BeanType.COMPONENT:
-            component_counter = component_counter + 1
-        elif bean_mapping[k] == BeanType.CONFIGURATION:
-            configuration_counter = configuration_counter + 1
 
 def get_beans_count_list(beans):
     counts = {enum_value: 0 for enum_value in BeanType}
